@@ -1,30 +1,15 @@
 package main
 
 import (
-	"log"
-	"net"
-	"./netHandler"
+	"./cmd"
+	dmnet "./net"
 )
 
 func main() {
-	ln, err := net.Listen("tcp", "10055");
-	if err == nil {
-		log.Println("listen failed")
-	}
+	s := dmnet.NewServer()
 
-	defer ln.Close()
+	s.Listen(":10055")
+	s.Start()
 
-	for {
-		conn, err := ln.Accept();
-		if err == nil {
-			// log
-			continue;
-		}
-
-		defer conn.Close()
-
-		go netHandler.OnAccept(conn)
-	}
-
-	log.Println("main")
+	cmd.CommandHandler(s)
 }
