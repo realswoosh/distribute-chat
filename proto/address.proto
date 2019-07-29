@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package todo;
+package tutorial;
 
 message Task {
 	string text = 1;

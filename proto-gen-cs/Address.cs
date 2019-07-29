@@ -9,7 +9,7 @@ using pb = global::Google.Protobuf;
 using pbc = global::Google.Protobuf.Collections;
 using pbr = global::Google.Protobuf.Reflection;
 using scg = global::System.Collections.Generic;
-namespace Todo {
+namespace Tutorial {
 
   /// <summary>Holder for reflection information generated from address.proto</summary>
   public static partial class AddressReflection {
@@ -24,12 +24,12 @@ namespace Todo {
     static AddressReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cg1hZGRyZXNzLnByb3RvEgR0b2RvIiIKBFRhc2sSDAoEdGV4dBgBIAEoCRIM",
-            "CgRkb25lGAIgASgIYgZwcm90bzM="));
+            "Cg1hZGRyZXNzLnByb3RvEgh0dXRvcmlhbCIiCgRUYXNrEgwKBHRleHQYASAB",
+            "KAkSDAoEZG9uZRgCIAEoCGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Todo.Task), global::Todo.Task.Parser, new[]{ "Text", "Done" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Tutorial.Task), global::Tutorial.Task.Parser, new[]{ "Text", "Done" }, null, null, null, null)
           }));
     }
     #endregion
@@ -44,7 +44,7 @@ namespace Todo {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Todo.AddressReflection.Descriptor.MessageTypes[0]; }
+      get { return global::Tutorial.AddressReflection.Descriptor.MessageTypes[0]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
