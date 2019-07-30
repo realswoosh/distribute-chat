@@ -2,6 +2,7 @@ package main
 
 import (
 	"../proto-gen-go"
+	"bytes"
 	"encoding/binary"
 	"fmt"
 	"github.com/golang/protobuf/proto"
@@ -18,7 +19,7 @@ func TestProto1(t *testing.T) {
 	}
 
 	data, err := proto.Marshal(test)
-	if (err != nil) {
+	if err != nil {
 		log.Fatal("marsharing error")
 	}
 
@@ -67,11 +68,15 @@ func TestNetworkReceived(t *testing.T) {
 
 	size := len(data)
 
-	log.Println("data size = ", size);
+	log.Println("data size = ", size)
 
-	var sizeByte []byte;
-	sizeByte := make([]byte, 4)
-	binary.LittleEndian.
-	
+	buf := new(bytes.Buffer)
+	binary.Write(buf, binary.LittleEndian, uint32(size))
+	binary.Write(buf, binary.LittleEndian, data)
+
+	var readsize uint32
+	binary.Read(buf, binary.LittleEndian, &readsize)
+
+	log.Println("readsize = ", readsize)
 
 }
