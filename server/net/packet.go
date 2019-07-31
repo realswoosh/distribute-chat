@@ -1,15 +1,15 @@
 package net
 
 type Packet struct {
-	size int32
-	msg string
-	messageBody []byte
+	Size uint32
+	Msg string
+	MessageBody []byte
 }
 
-func CreatePacket(size int32, msg string, body []byte) Packet {
+func CreatePacket(msg string, body []byte) Packet {
 	return Packet {
-		size: size,
-		msg: msg,
-		messageBody: body,
+		Size: uint32(len(body)),
+		Msg: msg,
+		MessageBody: body,
 	}
 }

@@ -48,19 +48,19 @@ func (session* Session) Serve() {
 		session.recvData = append(session.recvData, session.recvBuff[:n]...)
 
 		if n > 8 {
-			b1 := session.recvData[:4]
-			size := binary.LittleEndian.Uint32(b1);
+			sizeBuff := session.recvData[:4]
+			size := binary.LittleEndian.Uint32(sizeBuff)
 
 			log.Println("receive size = ", size)
 
-			if (session.recvSize >= int32(size)) {
+			if session.recvSize >= int32(size) {
 				msg := string(session.recvData[4 : 6])
 
 				log.Println("receive msg = ", msg)
 
 				body := make([]byte, size - 8)
 				copy(body, session.recvBuff[8 : size])
-				CreatePacket(int32(size), msg, body)
+				CreatePacket(msg, body)
 				session.recvData = session.recvData[size:]
 			}
 		}
