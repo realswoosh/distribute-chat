@@ -1,5 +1,7 @@
 package net
 
+var HeaderSize int32 = 8
+
 type Packet struct {
 	Size uint32
 	Msg string

@@ -5,8 +5,6 @@ import (
 	dmnet "./net"
 	"bytes"
 	"encoding/binary"
-	"encoding/gob"
-	"fmt"
 	"github.com/golang/protobuf/proto"
 	"log"
 	"net"
@@ -27,7 +25,51 @@ func TestProto1(t *testing.T) {
 		log.Fatal("marsharing error")
 	}
 
-	fmt.Print(data)
+	log.Println("bytes size : ", len(data))
+
+	msg := "msgt"
+
+	var tmpBuff bytes.Buffer
+
+	binary.Write(&tmpBuff, binary.LittleEndian, 4 + int32(len(data)) + int32(len(msg)))
+	binary.Write(&tmpBuff, binary.LittleEndian, []byte(msg))
+	binary.Write(&tmpBuff, binary.LittleEndian, data)
+
+	log.Println("buff size : ", tmpBuff.Len())
+
+	bytesSize := tmpBuff.Bytes()[:4]
+
+	var value int32
+
+	value |= int32(bytesSize[0])
+	value |= int32(bytesSize[1]) << 8
+	value |= int32(bytesSize[2]) << 16
+	value |= int32(bytesSize[3]) << 24
+
+	log.Println("readSize : ", value, ", buff size : ", tmpBuff.Len())
+
+	var size int32
+	var msgByte = make([]byte, 4)
+	var msgRead string
+
+	binary.Read(&tmpBuff, binary.LittleEndian, &size)
+	binary.Read(&tmpBuff, binary.LittleEndian, msgByte)
+
+	log.Println("remain buff size : ", tmpBuff.Len())
+
+	msgRead = string(msgByte)
+	var msgBody = make([]byte, size - 8)
+
+	binary.Read(&tmpBuff, binary.LittleEndian, msgBody)
+
+	var readProto tutorial.Person
+	proto.Unmarshal(msgBody, &readProto)
+
+	log.Println("readMsg : ", msgRead)
+	log.Println("proto : " , readProto)
+
+	log.Println("remain buff size : ", tmpBuff.Len())
+
 }
 
 func TestSlice(t *testing.T) {
@@ -44,6 +86,7 @@ func TestSlice(t *testing.T) {
 	log.Println("tt = ", tt)
 	log.Println("ss = ", s)
 }
+
 
 func WriteByteBuffer() <- chan string{
 	c := make(chan string)
@@ -90,47 +133,47 @@ func WriteByteBuffer() <- chan string{
 	}()
 	return c
 }
-
-func TestWriteByteBuffer(t *testing.T) {
-	f := WriteByteBuffer()
-	if <-f != "done" {
-
-	}
-}
-
-func TestPacket(t *testing.T) {
-
-	test := &tutorial.Person{
-		Name :"shin dong myung",
-		Id : 100,
-		Email : "realdm99@gmail.com",
-	}
-
-	data, err := proto.Marshal(test)
-
-	if err != nil {
-		log.Fatal("marshal error")
-	}
-
-	packet := dmnet.CreatePacket("test_msg", data)
-
-	var network bytes.Buffer
-
-	enc := gob.NewEncoder(&network)
-	dec := gob.NewDecoder(&network)
-
-	err = enc.Encode(packet)
-
-	if err != nil {
-		log.Fatal("encode error : ", err)
-	}
-
-	var receivePacket dmnet.Packet
-	err = dec.Decode(&receivePacket)
-
-	if err != nil {
-		log.Fatal("decode error : ", err)
-	}
-
-	fmt.Printf("%q", receivePacket.Msg)
-}
+//
+//func TestWriteByteBuffer(t *testing.T) {
+//	f := WriteByteBuffer()
+//	if <-f != "done" {
+//
+//	}
+//}
+//
+//func TestPacket(t *testing.T) {
+//
+//	test := &tutorial.Person{
+//		Name :"shin dong myung",
+//		Id : 100,
+//		Email : "realdm99@gmail.com",
+//	}
+//
+//	data, err := proto.Marshal(test)
+//
+//	if err != nil {
+//		log.Fatal("marshal error")
+//	}
+//
+//	packet := dmnet.CreatePacket("test_msg", data)
+//
+//	var network bytes.Buffer
+//
+//	enc := gob.NewEncoder(&network)
+//	dec := gob.NewDecoder(&network)
+//
+//	err = enc.Encode(packet)
+//
+//	if err != nil {
+//		log.Fatal("encode error : ", err)
+//	}
+//
+//	var receivePacket dmnet.Packet
+//	err = dec.Decode(&receivePacket)
+//
+//	if err != nil {
+//		log.Fatal("decode error : ", err)
+//	}
+//
+//	fmt.Printf("%q", receivePacket.Msg)
+//}

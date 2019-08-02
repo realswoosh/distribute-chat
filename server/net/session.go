@@ -1,7 +1,6 @@
 package net
 
 import (
-	"encoding/binary"
 	"io"
 	"log"
 	"net"
@@ -47,14 +46,22 @@ func (session* Session) Serve() {
 
 		session.recvData = append(session.recvData, session.recvBuff[:n]...)
 
-		if n > 8 {
-			sizeBuff := session.recvData[:4]
-			size := binary.LittleEndian.Uint32(sizeBuff)
+		if int32(n) >= HeaderSize {
 
-			log.Println("receive size = ", size)
+			sizeSlice := session.recvData[:4]
 
-			if session.recvSize >= int32(size) {
-				msg := string(session.recvData[4 : 6])
+			var size int32
+
+			size |= int32(sizeSlice[0])
+			size |= int32(sizeSlice[1]) << 8
+			size |= int32(sizeSlice[2]) << 16
+			size |= int32(sizeSlice[3]) << 24
+
+			log.Println("receive size = ", n, ", packet size : ", size)
+
+			if session.recvSize >= size {
+
+				msg := string(session.recvData[4 : 8])
 
 				log.Println("receive msg = ", msg)
 
