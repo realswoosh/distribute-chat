@@ -48,7 +48,7 @@ func (s* Server) Stop() {
 }
 
 func (s* Server) accept(conn net.Conn) *Session {
-	log.Println("accepting new connection from %v, total session: %v",
+	log.Printf("accepting new connection from %v, total session: %v",
 		conn.RemoteAddr().String(),
 		s.sessionManager.TotalSessionCount())
 

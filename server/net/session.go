@@ -1,6 +1,7 @@
 package net
 
 import (
+	"./handler"
 	"io"
 	"log"
 	"net"
@@ -62,12 +63,12 @@ func (session* Session) Serve() {
 			if session.recvSize >= size {
 
 				msg := string(session.recvData[4 : 8])
+				msgBody := session.recvData[HeaderSize : size]
 
 				log.Println("receive msg = ", msg)
 
-				body := make([]byte, size - 8)
-				copy(body, session.recvBuff[8 : size])
-				CreatePacket(msg, body)
+				handler.GetInstance().MsgHandler(msg, msgBody)
+				//session.Handler(CreatePacket(msg, msgBody))
 				session.recvData = session.recvData[size:]
 			}
 		}
