@@ -1,0 +1,1 @@
+protoc -I=/Users/realdm99/dev/github/realswoosh/distribute-chat/proto /Users/realdm99/dev/github/realswoosh/distribute-chat/proto/*.proto --go_out=/Users/realdm99/dev/github/realswoosh/distribute-chat/proto-gen-go --csharp_out=/Users/realdm99/dev/github/realswoosh/distribute-chat/proto-gen-cs
