@@ -1,0 +1,17 @@
+// https://developers.google.com/protocol-buffers/docs/tutorials
+
+// [START declaration]
+syntax = "proto3";
+package netmsg;
+
+option csharp_namespace = "net.msg";
+
+message Message {
+    enum Type {
+        TEST = 0;
+        WAY = 1;
+        REQ_WAY = 2;
+        REQ_ROOM_LIST = 3;
+        ACK_ROOM_LIST = 4;
+    }
+}

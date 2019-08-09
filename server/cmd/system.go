@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	dmnet "../net"
 	"bufio"
 	"fmt"
 	"log"
@@ -9,16 +8,16 @@ import (
 	"strings"
 )
 
-func CommandHandler(s *dmnet.Server) {
+func CommandHandler() {
 	reader := bufio.NewReader(os.Stdin)
 	for {
-		fmt.Print("-> ");
+		fmt.Print("-> ")
 		text, _ := reader.ReadString('\n')
 		text = strings.Replace(text, "\n", "", -1)
 		if strings.Compare("exit", text) == 0 {
 			log.Print("exit server")
-			s.Stop();
-			break;
+			//s.Stop()
+			break
 		}
 	}
 }

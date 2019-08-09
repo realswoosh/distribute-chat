@@ -1,7 +1,41 @@
 package chat
 
+import (
+	"sync"
+)
 
 type RoomManager struct {
-	rooms []Room
+	Rooms []Room
 }
 
+var instance *RoomManager
+var once sync.Once
+var monitor sync.Mutex
+
+func RoomManangerInstance() *RoomManager {
+	once.Do(func() {
+		instance = new (RoomManager)
+	})
+	return instance
+}
+
+func (manage* RoomManager)Add(newRoom Room) {
+	monitor.Lock()
+	defer monitor.Unlock()
+	manage.Rooms = append(manage.Rooms, newRoom)
+}
+
+func (manage* RoomManager)List() []RoomInfo {
+	var roomInfos []RoomInfo
+	monitor.Lock()
+	for _, e := range manage.Rooms {
+		ri := RoomInfo {
+			e.Idx,
+			e.Title,
+			int32(len(e.Sessions)),
+		}
+		roomInfos = append(roomInfos, ri)
+	}
+	monitor.Unlock()
+	return roomInfos
+}

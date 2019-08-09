@@ -14,11 +14,11 @@ func CreateSessionManager() *SessionManager{
 }
 
 func (manager* SessionManager) TotalSessionCount() int {
-	return len(manager.sessions) + 1;
+	return len(manager.sessions) + 1
 }
 
 func (manager* SessionManager) Remove(session *Session) {
-	manager.mutex.Lock();
+	manager.mutex.Lock()
 	defer manager.mutex.Unlock()
 
 	// 전체를 다 순환하는데..

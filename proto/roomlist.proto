@@ -1,0 +1,17 @@
+// https://developers.google.com/protocol-buffers/docs/tutorials
+
+// [START declaration]
+syntax = "proto3";
+package netmsg;
+
+option csharp_namespace = "net.msg";
+
+message RoomInfo {
+    int32 roomIdx = 1;
+    string title = 2;
+    int32 participateCount = 3;
+}
+
+message AckRoomList {
+    repeated RoomInfo roomList = 1;
+}

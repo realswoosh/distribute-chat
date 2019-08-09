@@ -14,7 +14,7 @@ import (
 
 func TestProto1(t *testing.T) {
 
-	test := &tutorial.Person{
+	test := &netmsg.Person{
 		Name : "a",
 		Id : 10,
 		Email : "realdm99@google.com",
@@ -27,12 +27,12 @@ func TestProto1(t *testing.T) {
 
 	log.Println("bytes size : ", len(data))
 
-	msg := "msgt"
+	msgText := "msgt"
 
 	var tmpBuff bytes.Buffer
 
-	binary.Write(&tmpBuff, binary.LittleEndian, 4 + int32(len(data)) + int32(len(msg)))
-	binary.Write(&tmpBuff, binary.LittleEndian, []byte(msg))
+	binary.Write(&tmpBuff, binary.LittleEndian, 4 + int32(len(data)) + int32(len(msgText)))
+	binary.Write(&tmpBuff, binary.LittleEndian, []byte(msgText))
 	binary.Write(&tmpBuff, binary.LittleEndian, data)
 
 	log.Println("buff size : ", tmpBuff.Len())
@@ -62,7 +62,7 @@ func TestProto1(t *testing.T) {
 
 	binary.Read(&tmpBuff, binary.LittleEndian, msgBody)
 
-	var readProto tutorial.Person
+	var readProto netmsg.Person
 	proto.Unmarshal(msgBody, &readProto)
 
 	log.Println("readMsg : ", msgRead)
@@ -88,26 +88,38 @@ func TestSlice(t *testing.T) {
 }
 
 
-func WriteByteBuffer() <- chan string{
-	c := make(chan string)
+func TestWriteByteBuffer(t *testing.T) {
+	s := dmnet.NewServer()
 
-	go func() {
-		s := dmnet.NewServer()
+	s.Listen(":10055")
+	s.Start()
 
-		s.Listen(":10055")
-		s.Start()
+	conn, err := net.Dial("tcp", "localhost:10055")
 
-		conn, err := net.Dial("tcp", "localhost:10055")
+	if nil != err {
+		log.Fatalf("failed to connect to server")
+	}
 
-		if nil != err {
-			log.Fatalf("failed to connect to server")
-		}
+	test := &netmsg.Person{
+		Name:  "a",
+		Id:    10,
+		Email: "realdm99@google.com",
+	}
 
-		test := &tutorial.Person{
-			Name:  "a",
-			Id:    10,
-			Email: "realdm99@google.com",
-		}
+
+
+
+
+	//packet := dmnet.CreatePacket("test", data);
+
+	msg := netmsg.Message_REQ_WAY
+
+	var network bytes.Buffer
+
+
+	for i := 0; i < 1; i++ {
+
+		test.Id++
 
 		data, err := proto.Marshal(test)
 
@@ -115,31 +127,18 @@ func WriteByteBuffer() <- chan string{
 			log.Fatal("marsharing error")
 		}
 
-		packet := dmnet.CreatePacket("test_msg", data);
-		var network bytes.Buffer
+		binary.Write(&network, binary.LittleEndian, 4 + 4 + int32(len(data)))
+		binary.Write(&network, binary.LittleEndian, int32(msg))
+		binary.Write(&network, binary.LittleEndian, data)
 
-		binary.Write(&network, binary.LittleEndian, packet)
-
-		//enc := gob.NewEncoder(&network)
-		//enc.Encode(packet)
-
-		log.Println("network buffer size : ", network.Len())
+		//log.Println("network buffer size : ", network.Len())
 
 		conn.Write(network.Bytes())
-
-		time.Sleep(10 * time.Second)
-
-		c <- "done1"
-	}()
-	return c
+		network.Reset()
+	}
+	time.Sleep(10 * time.Second)
 }
-//
-//func TestWriteByteBuffer(t *testing.T) {
-//	f := WriteByteBuffer()
-//	if <-f != "done" {
-//
-//	}
-//}
+
 //
 //func TestPacket(t *testing.T) {
 //

@@ -1,10 +1,17 @@
 package chat
 
-import (
-	dmnet "../net"
-)
+type RoomInfo struct {
+	Idx int32
+	Title string
+	ParticipateCount int32
+}
 
+type ISession interface {
+
+}
 type Room struct {
+	Idx int32
+	Title string
 	uuid string
-	sessions []*dmnet.Session
+	Sessions []ISession
 }

@@ -11,5 +11,5 @@ func main() {
 	s.Listen(":10055")
 	s.Start()
 
-	cmd.CommandHandler(s)
+	cmd.CommandHandler()
 }

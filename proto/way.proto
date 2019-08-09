@@ -1,0 +1,12 @@
+// https://developers.google.com/protocol-buffers/docs/tutorials
+
+// [START declaration]
+syntax = "proto3";
+package netmsg;
+
+option csharp_namespace = "net.msg";
+
+message AckWay {
+    string name = 1;
+    string email = 2;
+}
