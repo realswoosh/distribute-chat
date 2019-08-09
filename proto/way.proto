@@ -6,7 +6,13 @@ package netmsg;
 
 option csharp_namespace = "net.msg";
 
-message AckWay {
+message ReqWay {
     string name = 1;
     string email = 2;
+}
+
+message AckWay {
+    string uuid = 1;
+    string name = 2;
+    string email = 3;
 }

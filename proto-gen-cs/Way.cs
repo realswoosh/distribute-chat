@@ -24,23 +24,25 @@ namespace net.msg {
     static WayReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cgl3YXkucHJvdG8SBm5ldG1zZyIlCgZBY2tXYXkSDAoEbmFtZRgBIAEoCRIN",
-            "CgVlbWFpbBgCIAEoCUIKqgIHbmV0Lm1zZ2IGcHJvdG8z"));
+            "Cgl3YXkucHJvdG8SBm5ldG1zZyIlCgZSZXFXYXkSDAoEbmFtZRgBIAEoCRIN",
+            "CgVlbWFpbBgCIAEoCSIzCgZBY2tXYXkSDAoEdXVpZBgBIAEoCRIMCgRuYW1l",
+            "GAIgASgJEg0KBWVtYWlsGAMgASgJQgqqAgduZXQubXNnYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::net.msg.AckWay), global::net.msg.AckWay.Parser, new[]{ "Name", "Email" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::net.msg.ReqWay), global::net.msg.ReqWay.Parser, new[]{ "Name", "Email" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::net.msg.AckWay), global::net.msg.AckWay.Parser, new[]{ "Uuid", "Name", "Email" }, null, null, null)
           }));
     }
     #endregion
 
   }
   #region Messages
-  public sealed partial class AckWay : pb::IMessage<AckWay> {
-    private static readonly pb::MessageParser<AckWay> _parser = new pb::MessageParser<AckWay>(() => new AckWay());
+  public sealed partial class ReqWay : pb::IMessage<ReqWay> {
+    private static readonly pb::MessageParser<ReqWay> _parser = new pb::MessageParser<ReqWay>(() => new ReqWay());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<AckWay> Parser { get { return _parser; } }
+    public static pb::MessageParser<ReqWay> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -53,22 +55,22 @@ namespace net.msg {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public AckWay() {
+    public ReqWay() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public AckWay(AckWay other) : this() {
+    public ReqWay(ReqWay other) : this() {
       name_ = other.name_;
       email_ = other.email_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public AckWay Clone() {
-      return new AckWay(this);
+    public ReqWay Clone() {
+      return new ReqWay(this);
     }
 
     /// <summary>Field number for the "name" field.</summary>
@@ -95,11 +97,11 @@ namespace net.msg {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as AckWay);
+      return Equals(other as ReqWay);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(AckWay other) {
+    public bool Equals(ReqWay other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -158,7 +160,7 @@ namespace net.msg {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(AckWay other) {
+    public void MergeFrom(ReqWay other) {
       if (other == null) {
         return;
       }
@@ -184,6 +186,191 @@ namespace net.msg {
             break;
           }
           case 18: {
+            Email = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class AckWay : pb::IMessage<AckWay> {
+    private static readonly pb::MessageParser<AckWay> _parser = new pb::MessageParser<AckWay>(() => new AckWay());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<AckWay> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::net.msg.WayReflection.Descriptor.MessageTypes[1]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public AckWay() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public AckWay(AckWay other) : this() {
+      uuid_ = other.uuid_;
+      name_ = other.name_;
+      email_ = other.email_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public AckWay Clone() {
+      return new AckWay(this);
+    }
+
+    /// <summary>Field number for the "uuid" field.</summary>
+    public const int UuidFieldNumber = 1;
+    private string uuid_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Uuid {
+      get { return uuid_; }
+      set {
+        uuid_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "name" field.</summary>
+    public const int NameFieldNumber = 2;
+    private string name_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Name {
+      get { return name_; }
+      set {
+        name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "email" field.</summary>
+    public const int EmailFieldNumber = 3;
+    private string email_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Email {
+      get { return email_; }
+      set {
+        email_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as AckWay);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(AckWay other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Uuid != other.Uuid) return false;
+      if (Name != other.Name) return false;
+      if (Email != other.Email) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Uuid.Length != 0) hash ^= Uuid.GetHashCode();
+      if (Name.Length != 0) hash ^= Name.GetHashCode();
+      if (Email.Length != 0) hash ^= Email.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Uuid.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Uuid);
+      }
+      if (Name.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Name);
+      }
+      if (Email.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(Email);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Uuid.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Uuid);
+      }
+      if (Name.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
+      }
+      if (Email.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Email);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(AckWay other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Uuid.Length != 0) {
+        Uuid = other.Uuid;
+      }
+      if (other.Name.Length != 0) {
+        Name = other.Name;
+      }
+      if (other.Email.Length != 0) {
+        Email = other.Email;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Uuid = input.ReadString();
+            break;
+          }
+          case 18: {
+            Name = input.ReadString();
+            break;
+          }
+          case 26: {
             Email = input.ReadString();
             break;
           }

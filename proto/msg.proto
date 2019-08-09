@@ -11,7 +11,10 @@ message Message {
         TEST = 0;
         WAY = 1;
         REQ_WAY = 2;
-        REQ_ROOM_LIST = 3;
-        ACK_ROOM_LIST = 4;
+        ACK_WAY = 3;
+        REQ_ROOM_LIST = 4;
+        ACK_ROOM_LIST = 5;
+        REQ_ROOM_JOIN = 6;
+        ACK_ROOM_JOIN = 7;
     }
 }

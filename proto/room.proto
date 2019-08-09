@@ -6,6 +6,11 @@ package netmsg;
 
 option csharp_namespace = "net.msg";
 
+message UserInfo {
+    string uuid = 1;
+    string name = 2;
+}
+
 message RoomInfo {
     int32 roomIdx = 1;
     string title = 2;
@@ -14,4 +19,15 @@ message RoomInfo {
 
 message AckRoomList {
     repeated RoomInfo roomList = 1;
+}
+
+message ReqRoomJoin {
+    int32 roomIdx = 1;
+    string title = 2;
+}
+
+message AckRoomJoin {
+    int32 roomIdx = 1;
+    string title = 2;
+    repeated UserInfo users = 3;
 }

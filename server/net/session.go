@@ -7,12 +7,14 @@ import (
 	"bytes"
 	"encoding/binary"
 	"github.com/golang/protobuf/proto"
+	"github.com/google/uuid"
 	"io"
 	"log"
 	"net"
 )
 
 type SessionInfo struct {
+	uid uuid.UUID
 	Name string
 	Email string
 }
@@ -37,6 +39,7 @@ func CreateSession(manager *SessionManager, conn net.Conn) *Session {
 	s.msgHandler = handler.MsgHandler{
 		Dispatcher: map[netmsg.Message_Type]handler.MsgFunc{
 			netmsg.Message_REQ_WAY: s.msgHandlerReqWay,
+			netmsg.Message_REQ_ROOM_LIST: s.msgHandlerReqRoomList,
 		}}
 	return s
 }
@@ -45,16 +48,20 @@ func (session* Session) disconnect() {
 	session.manager.Remove(session)
 }
 
-func (session* Session) Send(msgText string, data []byte) {
+func (session* Session) Send(msg netmsg.Message_Type, data proto.Message) {
+	marshal, err := proto.Marshal(data)
+	if err != nil {
+		log.Fatal("marsharing error")
+	}
+
 	var networkBuffer bytes.Buffer
 
-	binary.Write(&networkBuffer, binary.LittleEndian, 4+int32(len(data))+int32(len(msgText)))
-	binary.Write(&networkBuffer, binary.LittleEndian, []byte(msgText))
+	binary.Write(&networkBuffer, binary.LittleEndian, int32(HeaderSize + int32(len(marshal))))
+	binary.Write(&networkBuffer, binary.LittleEndian, int32(msg))
 	binary.Write(&networkBuffer, binary.LittleEndian, data)
 
 	session.conn.Write(networkBuffer.Bytes())
 }
-
 
 func (session* Session) Serve() {
 	defer session.disconnect()
@@ -115,24 +122,34 @@ func (session* Session)msgHandlerTest(msgBody []byte) {
 }
 
 func (session* Session)msgHandlerReqWay(msgBody []byte) {
+
+	var msgReqWay netmsg.ReqWay
+
+	proto.Unmarshal(msgBody, &msgReqWay)
+
+	session.Info.uid, _ = uuid.NewUUID()
+	session.Info.Name = msgReqWay.Name
+	session.Info.Email = msgReqWay.Email
+
 	var msgAckWay netmsg.AckWay
 
-	proto.Unmarshal(msgBody, &msgAckWay)
+	msgAckWay.Name = session.Info.Name
+	msgAckWay.Email = session.Info.Email
+	msgAckWay.Uuid = session.Info.uid.String()
 
-	log.Println("proto : ", msgAckWay)
-	session.Info.Name = msgAckWay.Name
-	session.Info.Email = msgAckWay.Email
+	session.Send(netmsg.Message_ACK_WAY, &msgAckWay)
 }
 
 func (session* Session)msgHandlerReqRoomList(msgBody []byte) {
-	roomInfos := chat.RoomManangerInstance().List()
-	msgRoomList := netmsg.AckRoomList{}
-	for _, r := range roomInfos {
+	rooms := netmsg.AckRoomList{}
+	for _, r := range chat.RoomManangerInstance().List() {
 		msgRoomInfo := &netmsg.RoomInfo{
 			RoomIdx:              r.Idx,
 			Title:                r.Title,
 			ParticipateCount:     r.ParticipateCount,
 		}
-		msgRoomList.RoomList = append(msgRoomList.RoomList, msgRoomInfo)
+		rooms.RoomList = append(rooms.RoomList, msgRoomInfo)
 	}
+
+	session.Send(netmsg.Message_ACK_ROOM_LIST, &rooms)
 }

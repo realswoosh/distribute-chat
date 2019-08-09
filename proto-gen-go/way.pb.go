@@ -20,9 +20,57 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
-type AckWay struct {
+type ReqWay struct {
 	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	Email                string   `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *ReqWay) Reset()         { *m = ReqWay{} }
+func (m *ReqWay) String() string { return proto.CompactTextString(m) }
+func (*ReqWay) ProtoMessage()    {}
+func (*ReqWay) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8313664ff05de314, []int{0}
+}
+
+func (m *ReqWay) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ReqWay.Unmarshal(m, b)
+}
+func (m *ReqWay) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ReqWay.Marshal(b, m, deterministic)
+}
+func (m *ReqWay) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ReqWay.Merge(m, src)
+}
+func (m *ReqWay) XXX_Size() int {
+	return xxx_messageInfo_ReqWay.Size(m)
+}
+func (m *ReqWay) XXX_DiscardUnknown() {
+	xxx_messageInfo_ReqWay.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ReqWay proto.InternalMessageInfo
+
+func (m *ReqWay) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+func (m *ReqWay) GetEmail() string {
+	if m != nil {
+		return m.Email
+	}
+	return ""
+}
+
+type AckWay struct {
+	Uuid                 string   `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	Name                 string   `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Email                string   `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -32,7 +80,7 @@ func (m *AckWay) Reset()         { *m = AckWay{} }
 func (m *AckWay) String() string { return proto.CompactTextString(m) }
 func (*AckWay) ProtoMessage()    {}
 func (*AckWay) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8313664ff05de314, []int{0}
+	return fileDescriptor_8313664ff05de314, []int{1}
 }
 
 func (m *AckWay) XXX_Unmarshal(b []byte) error {
@@ -53,6 +101,13 @@ func (m *AckWay) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_AckWay proto.InternalMessageInfo
 
+func (m *AckWay) GetUuid() string {
+	if m != nil {
+		return m.Uuid
+	}
+	return ""
+}
+
 func (m *AckWay) GetName() string {
 	if m != nil {
 		return m.Name
@@ -68,18 +123,20 @@ func (m *AckWay) GetEmail() string {
 }
 
 func init() {
+	proto.RegisterType((*ReqWay)(nil), "netmsg.ReqWay")
 	proto.RegisterType((*AckWay)(nil), "netmsg.AckWay")
 }
 
 func init() { proto.RegisterFile("way.proto", fileDescriptor_8313664ff05de314) }
 
 var fileDescriptor_8313664ff05de314 = []byte{
-	// 102 bytes of a gzipped FileDescriptorProto
+	// 127 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x2c, 0x4f, 0xac, 0xd4,
 	0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0xcb, 0x4b, 0x2d, 0xc9, 0x2d, 0x4e, 0x57, 0x32, 0xe2,
-	0x62, 0x73, 0x4c, 0xce, 0x0e, 0x4f, 0xac, 0x14, 0x12, 0xe2, 0x62, 0xc9, 0x4b, 0xcc, 0x4d, 0x95,
+	0x62, 0x0b, 0x4a, 0x2d, 0x0c, 0x4f, 0xac, 0x14, 0x12, 0xe2, 0x62, 0xc9, 0x4b, 0xcc, 0x4d, 0x95,
 	0x60, 0x54, 0x60, 0xd4, 0xe0, 0x0c, 0x02, 0xb3, 0x85, 0x44, 0xb8, 0x58, 0x53, 0x73, 0x13, 0x33,
-	0x73, 0x24, 0x98, 0xc0, 0x82, 0x10, 0x8e, 0x13, 0xd7, 0x2a, 0x26, 0xf6, 0xbc, 0xd4, 0x12, 0xbd,
-	0xdc, 0xe2, 0xf4, 0x24, 0x36, 0xb0, 0x71, 0xc6, 0x80, 0x00, 0x00, 0x00, 0xff, 0xff, 0x95, 0x08,
-	0x53, 0xd1, 0x5b, 0x00, 0x00, 0x00,
+	0x73, 0x24, 0x98, 0xc0, 0x82, 0x10, 0x8e, 0x92, 0x1b, 0x17, 0x9b, 0x63, 0x72, 0x36, 0x54, 0x4f,
+	0x69, 0x69, 0x66, 0x0a, 0x4c, 0x0f, 0x88, 0x0d, 0x37, 0x87, 0x09, 0x9b, 0x39, 0xcc, 0x48, 0xe6,
+	0x38, 0x71, 0xad, 0x62, 0x62, 0xcf, 0x4b, 0x2d, 0xd1, 0xcb, 0x2d, 0x4e, 0x4f, 0x62, 0x03, 0x3b,
+	0xcb, 0x18, 0x10, 0x00, 0x00, 0xff, 0xff, 0x5b, 0x93, 0xa0, 0x6f, 0xa3, 0x00, 0x00, 0x00,
 }

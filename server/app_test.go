@@ -87,7 +87,6 @@ func TestSlice(t *testing.T) {
 	log.Println("ss = ", s)
 }
 
-
 func TestWriteByteBuffer(t *testing.T) {
 	s := dmnet.NewServer()
 
@@ -106,16 +105,9 @@ func TestWriteByteBuffer(t *testing.T) {
 		Email: "realdm99@google.com",
 	}
 
-
-
-
-
-	//packet := dmnet.CreatePacket("test", data);
-
 	msg := netmsg.Message_REQ_WAY
 
 	var network bytes.Buffer
-
 
 	for i := 0; i < 1; i++ {
 
@@ -136,6 +128,7 @@ func TestWriteByteBuffer(t *testing.T) {
 		conn.Write(network.Bytes())
 		network.Reset()
 	}
+
 	time.Sleep(10 * time.Second)
 }
 

@@ -24,9 +24,10 @@ namespace net.msg {
     static MsgReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cgltc2cucHJvdG8SBm5ldG1zZyJXCgdNZXNzYWdlIkwKBFR5cGUSCAoEVEVT",
-            "VBAAEgcKA1dBWRABEgsKB1JFUV9XQVkQAhIRCg1SRVFfUk9PTV9MSVNUEAMS",
-            "EQoNQUNLX1JPT01fTElTVBAEQgqqAgduZXQubXNnYgZwcm90bzM="));
+            "Cgltc2cucHJvdG8SBm5ldG1zZyKKAQoHTWVzc2FnZSJ/CgRUeXBlEggKBFRF",
+            "U1QQABIHCgNXQVkQARILCgdSRVFfV0FZEAISCwoHQUNLX1dBWRADEhEKDVJF",
+            "UV9ST09NX0xJU1QQBBIRCg1BQ0tfUk9PTV9MSVNUEAUSEQoNUkVRX1JPT01f",
+            "Sk9JThAGEhEKDUFDS19ST09NX0pPSU4QB0IKqgIHbmV0Lm1zZ2IGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -144,8 +145,11 @@ namespace net.msg {
         [pbr::OriginalName("TEST")] Test = 0,
         [pbr::OriginalName("WAY")] Way = 1,
         [pbr::OriginalName("REQ_WAY")] ReqWay = 2,
-        [pbr::OriginalName("REQ_ROOM_LIST")] ReqRoomList = 3,
-        [pbr::OriginalName("ACK_ROOM_LIST")] AckRoomList = 4,
+        [pbr::OriginalName("ACK_WAY")] AckWay = 3,
+        [pbr::OriginalName("REQ_ROOM_LIST")] ReqRoomList = 4,
+        [pbr::OriginalName("ACK_ROOM_LIST")] AckRoomList = 5,
+        [pbr::OriginalName("REQ_ROOM_JOIN")] ReqRoomJoin = 6,
+        [pbr::OriginalName("ACK_ROOM_JOIN")] AckRoomJoin = 7,
       }
 
     }
