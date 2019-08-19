@@ -2,10 +2,14 @@ package main
 
 import (
 	"../proto-gen-go"
+	"./conf"
 	dmnet "./net"
 	"bytes"
 	"encoding/binary"
+	"encoding/json"
+	"fmt"
 	"github.com/golang/protobuf/proto"
+	"io/ioutil"
 	"log"
 	"net"
 	"testing"
@@ -129,7 +133,29 @@ func TestWriteByteBuffer(t *testing.T) {
 		network.Reset()
 	}
 
-	time.Sleep(10 * time.Second)
+	time.Sleep(1 * time.Second)
+}
+
+func TestJsonConfig(t *testing.T) {
+	bytes, err := ioutil.ReadFile("../conf/conf_server.json")
+	if err != nil {
+		panic(err)
+	}
+	configurationSave := &conf.Configuration{
+		Mq: conf.MessageQueue{
+			Endpoint: "localhost",
+			Port:     1000,
+			User:     "user",
+			Pass:     "pass",
+		},
+	}
+
+	jsonBytes, _ := json.Marshal(configurationSave)
+	fmt.Println(string(jsonBytes))
+
+	configuration := conf.Configuration{}
+	json.Unmarshal(bytes, &configuration)
+	fmt.Println(configuration.Mq) // output: [UserA, UserB]
 }
 
 //

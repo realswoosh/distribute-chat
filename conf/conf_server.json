@@ -1,0 +1,8 @@
+{
+  "Mqq" : {
+    "Endpoint" : "localhost",
+    "Port" : "5672",
+    "User" : "mqadmin",
+    "Pass" : "mqadmin"
+  }
+}

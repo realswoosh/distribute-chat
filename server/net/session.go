@@ -40,6 +40,7 @@ func CreateSession(manager *SessionManager, conn net.Conn) *Session {
 		Dispatcher: map[netmsg.Message_Type]handler.MsgFunc{
 			netmsg.Message_REQ_WAY: s.msgHandlerReqWay,
 			netmsg.Message_REQ_ROOM_LIST: s.msgHandlerReqRoomList,
+			netmsg.Message_REQ_ROOM_JOIN: s.msgHandlerReqRoomJoin,
 		}}
 	return s
 }
@@ -152,4 +153,11 @@ func (session* Session)msgHandlerReqRoomList(msgBody []byte) {
 	}
 
 	session.Send(netmsg.Message_ACK_ROOM_LIST, &rooms)
+}
+
+func (session* Session)msgHandlerReqRoomJoin(msgBody []byte) {
+	var msgReqRoomJoin netmsg.ReqRoomJoin
+
+	proto.Unmarshal(msgBody, &msgReqRoomJoin)
+
 }

@@ -25,6 +25,16 @@ func (manage* RoomManager)Add(newRoom Room) {
 	manage.Rooms = append(manage.Rooms, newRoom)
 }
 
+func (manage* RoomManager)Exists(title string) (bool, int) {
+	for i, room := range manage.Rooms {
+		if room.Title == title {
+			return true, i
+		}
+	}
+
+	return false, -1
+}
+
 func (manage* RoomManager)List() []RoomInfo {
 	var roomInfos []RoomInfo
 	monitor.Lock()
