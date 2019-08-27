@@ -26,7 +26,8 @@ namespace chat_client_form.Net
 		private static readonly ManualResetEvent DoneSend = new ManualResetEvent(false);
 		private static readonly ManualResetEvent DoneReceive = new ManualResetEvent(false);
 
-		private ClientSocket() {
+		private ClientSocket()
+		{
 			socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
 
 			receivedMemoryStream = new MemoryStream(received);
@@ -65,6 +66,8 @@ namespace chat_client_form.Net
 				client.EndConnect(ar);
 				DoneConnect.Set();
 
+				Console.WriteLine("Connect complete!!");
+
 				Receive();
 			}
 			catch (Exception e)
@@ -76,7 +79,7 @@ namespace chat_client_form.Net
 
 		private void Receive()
 		{
-			
+
 			try
 			{
 				socket.BeginReceive(buffer, 0, BufferSize, 0,
@@ -98,7 +101,7 @@ namespace chat_client_form.Net
 
 				if (bytesRead > 0)
 				{
-					
+					Console.WriteLine("receive {0} bytes", bytesRead);
 				}
 			}
 			catch (Exception e)

@@ -50,16 +50,24 @@ func (session* Session) disconnect() {
 }
 
 func (session* Session) Send(msg netmsg.Message_Type, data proto.Message) {
-	marshal, err := proto.Marshal(data)
-	if err != nil {
-		log.Fatal("marsharing error")
+	var marshal []byte
+
+	if data != nil {
+		convert, err := proto.Marshal(data)
+		marshal = convert
+		if err != nil {
+			log.Fatal("marsharing error")
+		}
 	}
 
 	var networkBuffer bytes.Buffer
 
 	binary.Write(&networkBuffer, binary.LittleEndian, int32(HeaderSize + int32(len(marshal))))
 	binary.Write(&networkBuffer, binary.LittleEndian, int32(msg))
-	binary.Write(&networkBuffer, binary.LittleEndian, data)
+
+	if data != nil {
+		binary.Write(&networkBuffer, binary.LittleEndian, marshal)
+	}
 
 	session.conn.Write(networkBuffer.Bytes())
 }
@@ -67,7 +75,7 @@ func (session* Session) Send(msg netmsg.Message_Type, data proto.Message) {
 func (session* Session) Serve() {
 	defer session.disconnect()
 
-	session.conn.Write([]byte("way"))
+	session.Send(netmsg.Message_WAY, nil)
 
 	for {
 		n, err := session.conn.Read(session.recvBuff)
