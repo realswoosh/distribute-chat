@@ -12,7 +12,7 @@ var instance *RoomManager
 var once sync.Once
 var monitor sync.Mutex
 
-func RoomManangerInstance() *RoomManager {
+func RoomManagerInstance() *RoomManager {
 	once.Do(func() {
 		instance = new (RoomManager)
 	})

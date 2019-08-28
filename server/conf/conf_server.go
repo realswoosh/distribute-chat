@@ -8,5 +8,5 @@ type MessageQueue struct {
 }
 
 type Configuration struct {
-	Mq MessageQueue `json:"Mqq"`
+	Mq MessageQueue `json:"MessageQueue"`
 }

@@ -132,18 +132,18 @@ func (session* Session)msgHandlerReqWay(msgBody []byte) {
 	session.Info.Name = msgReqWay.Name
 	session.Info.Email = msgReqWay.Email
 
-	var msgAckWay netmsg.AckWay
-
-	msgAckWay.Name = session.Info.Name
-	msgAckWay.Email = session.Info.Email
-	msgAckWay.Uuid = session.Info.uid.String()
+	msgAckWay := netmsg.AckWay{
+		Name : session.Info.Name,
+		Email : session.Info.Email,
+		Uuid : session.Info.uid.String(),
+	}
 
 	session.Send(netmsg.Message_ACK_WAY, &msgAckWay)
 }
 
 func (session* Session)msgHandlerReqRoomList(msgBody []byte) {
 	rooms := netmsg.AckRoomList{}
-	for _, r := range chat.RoomManangerInstance().List() {
+	for _, r := range chat.RoomManagerInstance().List() {
 		msgRoomInfo := &netmsg.RoomInfo{
 			RoomIdx:              r.Idx,
 			Title:                r.Title,
