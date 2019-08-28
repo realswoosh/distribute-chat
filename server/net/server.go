@@ -21,6 +21,8 @@ func (s* Server) Listen(address string) error {
 	ln, err := net.Listen("tcp", address)
 	if err == nil {
 		s.listener = ln
+	} else {
+		log.Println(err)
 	}
 	log.Printf("listening on %v", address)
 	return err

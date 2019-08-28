@@ -14,7 +14,7 @@ namespace chat_client_form
 		{
 			Console.WriteLine("UserPanel_LoginButtonClick");
 			//your code here
-			ClientSocket.Instance.Dial("127.0.0.1", 10055);
+			ClientSocket.Instance.Dial("127.0.0.1", 20055);
 
 		}
 	}

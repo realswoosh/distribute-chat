@@ -8,7 +8,7 @@ import (
 func main() {
 	s := dmnet.NewServer()
 
-	s.Listen(":10055")
+	s.Listen(":20055")
 	s.Start()
 
 	cmd.CommandHandler()
