@@ -55,6 +55,7 @@
     <Compile Include="Control\LoginPanel.Designer.cs">
       <DependentUpon>LoginPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Def\Constants.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,6 +68,11 @@
     <Compile Include="Net\ClientSocket.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="proto-gen-cs\Address.cs" />
+    <Compile Include="proto-gen-cs\Msg.cs" />
+    <Compile Include="proto-gen-cs\Room.cs" />
+    <Compile Include="proto-gen-cs\Test.cs" />
+    <Compile Include="proto-gen-cs\Way.cs" />
     <EmbeddedResource Include="Control\LoginPanel.resx">
       <DependentUpon>LoginPanel.cs</DependentUpon>
     </EmbeddedResource>
@@ -96,5 +102,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>xcopy /y /d $(SolutionDir)..\..\proto-gen-cs\*.* $(SolutionDir)proto-gen-cs</PreBuildEvent>
+  </PropertyGroup>
 </Project>
