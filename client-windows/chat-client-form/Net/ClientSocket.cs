@@ -27,7 +27,7 @@ namespace chat_client_form.Net
 		private static readonly ManualResetEvent DoneSend = new ManualResetEvent(false);
 		private static readonly ManualResetEvent DoneReceive = new ManualResetEvent(false);
 
-		private Dictionary<Message.Types.Type, Action<IMessage>> msgHandlerDictionary = new Dictionary<Message.Types.Type, Action<IMessage>>();
+		private Dictionary<Message.Types.Type, Action<ArraySegment<byte>>> MsgHandler { get; } = new Dictionary<Message.Types.Type, Action<ArraySegment<byte>>>();
 
 		private ClientSocket()
 		{
@@ -49,6 +49,18 @@ namespace chat_client_form.Net
 
 				return instance;
 			}
+		}
+
+		public static void Register(Message.Types.Type type, Action<ArraySegment<byte>> handler)
+		{
+			Instance.MsgHandler.Add(type, handler);
+		}
+
+		public static void Send(Message.Types.Type type, IMessage req)
+		{
+			Packet p = new Packet(type, req);
+
+			Instance.Send(p.Buffer);
 		}
 
 		public void Dial(string addr, int port)
@@ -103,6 +115,11 @@ namespace chat_client_form.Net
 				MessageParser<T> parser = new MessageParser<T>(() => new T());
 				return parser.ParseFrom(ms);
 			}
+		}
+
+		private void SendCallback(IAsyncResult ar)
+		{
+
 		}
 
 		private void ReceiveCallback(IAsyncResult ar)
@@ -162,12 +179,26 @@ namespace chat_client_form.Net
 			}
 		}
 
+		private void Send(byte[] data)
+		{
+			socket.BeginSend(data, 0, data.Length, 0, new AsyncCallback(SendCallback), socket);
+		}
+
 		private void PacketHandler(ArraySegment<byte> msg, ArraySegment<byte> body)
 		{
 			Int32 tmpMsg = BitConverter.ToInt32(msg.Array, msg.Offset);
 
-			var msgType = (net.msg.Message.Types.Type)Enum.ToObject(typeof(net.msg.Message.Types.Type), tmpMsg);
+			var msgType = (Message.Types.Type)Enum.ToObject(typeof(Message.Types.Type), tmpMsg);
 
+			Action<ArraySegment<byte>> retAction;
+			if (MsgHandler.TryGetValue(msgType, out retAction))
+			{
+				retAction(body);
+			}
+			else
+			{
+				Console.WriteLine("Could not find the specified key.");
+			}
 			Console.WriteLine("msgType = {0}", msgType.ToString());
 		}
 	}

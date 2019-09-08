@@ -141,8 +141,18 @@ func TestJsonConfig(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
+
+	fmt.Println(string(bytes))
+
 	configurationSave := &conf.Configuration{
-		Mq: conf.MessageQueue{
+		HubInfos: [] conf.HubInfo {
+			{
+				Name: "hubName",
+				Address: "hubAddress",
+				Type: "hubType",
+			},
+		},
+		MsgQueue: conf.MessageQueue{
 			Endpoint: "localhost",
 			Port:     1000,
 			User:     "user",
@@ -155,7 +165,7 @@ func TestJsonConfig(t *testing.T) {
 
 	configuration := conf.Configuration{}
 	json.Unmarshal(bytes, &configuration)
-	fmt.Println(configuration.Mq) // output: [UserA, UserB]
+	fmt.Println(configuration) // output: [UserA, UserB]
 }
 
 //

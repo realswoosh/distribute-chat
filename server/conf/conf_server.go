@@ -1,5 +1,23 @@
 package conf
 
+type RemoteType int
+
+const (
+	Local RemoteType = 1 + iota
+	Remote
+)
+
+var serverType = [...]string{
+	"Local",
+	"Remote",
+}
+
+type HubInfo struct {
+	Name string		`json:"name"`
+	Address string 	`json:"address"`
+	Type string 	`json:"type"`
+}
+
 type MessageQueue struct {
 	Endpoint string
 	Port int
@@ -8,5 +26,6 @@ type MessageQueue struct {
 }
 
 type Configuration struct {
-	Mq MessageQueue `json:"Mqq"`
+	HubInfos []HubInfo 		`json:"hubs"`
+	MsgQueue MessageQueue 	`json:"msg_queue"`
 }

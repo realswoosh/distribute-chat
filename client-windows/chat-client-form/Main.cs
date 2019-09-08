@@ -15,6 +15,8 @@ namespace chat_client_form
 		public Main()
 		{
 			InitializeComponent();
+
+			InitializeHandler();
 		}
 
 		private void Main_Load(object sender, EventArgs e)

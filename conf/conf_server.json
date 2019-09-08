@@ -1,7 +1,10 @@
 {
-  "Mqq" : {
+  "hubs" : [
+    { "name" : "localhost", "address" : "127.0.0.1", "type" : "local" }
+  ],
+  "msg_queue" : {
     "Endpoint" : "localhost",
-    "Port" : "5672",
+    "Port" : 5672,
     "User" : "mqadmin",
     "Pass" : "mqadmin"
   }
