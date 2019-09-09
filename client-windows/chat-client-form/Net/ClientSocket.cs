@@ -8,6 +8,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using net.msg;
 
 namespace chat_client_form.Net
 {
@@ -22,17 +23,15 @@ namespace chat_client_form.Net
 		private byte[] received = new byte[BufferSize * 8];
 		private int receiveSize = 0;
 
-		private MemoryStream receivedMemoryStream;
-
 		private static readonly ManualResetEvent DoneConnect = new ManualResetEvent(false);
 		private static readonly ManualResetEvent DoneSend = new ManualResetEvent(false);
 		private static readonly ManualResetEvent DoneReceive = new ManualResetEvent(false);
 
+		private Dictionary<Message.Types.Type, Action<ArraySegment<byte>>> MsgHandler { get; } = new Dictionary<Message.Types.Type, Action<ArraySegment<byte>>>();
+
 		private ClientSocket()
 		{
 			socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
-
-			receivedMemoryStream = new MemoryStream(received);
 		}
 
 		public static ClientSocket Instance
@@ -50,6 +49,18 @@ namespace chat_client_form.Net
 
 				return instance;
 			}
+		}
+
+		public static void Register(Message.Types.Type type, Action<ArraySegment<byte>> handler)
+		{
+			Instance.MsgHandler.Add(type, handler);
+		}
+
+		public static void Send(Message.Types.Type type, IMessage req)
+		{
+			Packet p = new Packet(type, req);
+
+			Instance.Send(p.Buffer);
 		}
 
 		public void Dial(string addr, int port)
@@ -78,10 +89,8 @@ namespace chat_client_form.Net
 			}
 		}
 
-
 		private void Receive()
 		{
-
 			try
 			{
 				socket.BeginReceive(buffer, 0, BufferSize, 0,
@@ -108,9 +117,13 @@ namespace chat_client_form.Net
 			}
 		}
 
-		private void ReceiveCallback(IAsyncResult ar)
+		private void SendCallback(IAsyncResult ar)
 		{
 
+		}
+
+		private void ReceiveCallback(IAsyncResult ar)
+		{
 			try
 			{
 				Socket socket = (Socket)ar.AsyncState;
@@ -118,30 +131,36 @@ namespace chat_client_form.Net
 
 				if (bytesRead > 0)
 				{
-					receiveSize += bytesRead;
+					using (var writer = new MemoryStream(received))
+					{
+						writer.Write(buffer, receiveSize, bytesRead);
+					}
 
-					receivedMemoryStream.Write(buffer, 0, bytesRead);
+					receiveSize += bytesRead;
 
 					Int32 readOffset = 0;
 
-					byte[] msArray = receivedMemoryStream.ToArray();
-
 					while (Def.Constants.HeaderSize <= receiveSize - readOffset)
 					{
-						int packetSize = BitConverter.ToInt32(msArray, readOffset);
+						int packetSize = BitConverter.ToInt32(received, readOffset);
 						if (packetSize >= receiveSize - readOffset)
 						{
 							byte[] packet = new byte[packetSize];
 
-							receivedMemoryStream.Read(packet, 0, packetSize);
+							using (var reader = new MemoryStream(received))
+							{
+								reader.Read(packet, 0, packetSize);
+							}
 
 							ArraySegment<byte> segMsg = new ArraySegment<byte>(packet, 4, 4);
-							ArraySegment<byte> seg = default;
+							ArraySegment<byte> segBody = default;
 
 							if (packetSize > Def.Constants.HeaderSize)
 							{
-								seg = new ArraySegment<byte>(packet, Def.Constants.HeaderSize, packetSize - Def.Constants.HeaderSize);
+								segBody = new ArraySegment<byte>(packet, Def.Constants.HeaderSize, packetSize - Def.Constants.HeaderSize);
 							}
+
+							PacketHandler(segMsg, segBody);
 
 							readOffset += packetSize;
 						}
@@ -158,6 +177,29 @@ namespace chat_client_form.Net
 			{
 
 			}
+		}
+
+		private void Send(byte[] data)
+		{
+			socket.BeginSend(data, 0, data.Length, 0, new AsyncCallback(SendCallback), socket);
+		}
+
+		private void PacketHandler(ArraySegment<byte> msg, ArraySegment<byte> body)
+		{
+			Int32 tmpMsg = BitConverter.ToInt32(msg.Array, msg.Offset);
+
+			var msgType = (Message.Types.Type)Enum.ToObject(typeof(Message.Types.Type), tmpMsg);
+
+			Action<ArraySegment<byte>> retAction;
+			if (MsgHandler.TryGetValue(msgType, out retAction))
+			{
+				retAction(body);
+			}
+			else
+			{
+				Console.WriteLine("Could not find the specified key.");
+			}
+			Console.WriteLine("msgType = {0}", msgType.ToString());
 		}
 	}
 }
