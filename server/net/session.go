@@ -1,10 +1,11 @@
 package net
 
 import (
-	"../../proto-gen-go"
-	"../chat"
-	"./handler"
 	"bytes"
+	pb "distribute-chat/proto-gen-go/netmsg/pb"
+	"distribute-chat/server/chat"
+	"distribute-chat/server/conf"
+	"distribute-chat/server/net/handler"
 	"encoding/binary"
 	"github.com/golang/protobuf/proto"
 	"github.com/google/uuid"
@@ -33,40 +34,43 @@ func CreateSession(manager *SessionManager, conn net.Conn) *Session {
 		conn:     conn,
 		manager:  manager,
 		recvSize: 0,
-		recvBuff: make([]byte, 4096),
+		recvBuff: make([]byte, conf.SessionBufferSize),
 	}
 
 	s.msgHandler = handler.MsgHandler{
-		Dispatcher: map[netmsg.Message_Type]handler.MsgFunc{
-			netmsg.Message_REQ_WAY: s.msgHandlerReqWay,
-			netmsg.Message_REQ_ROOM_LIST: s.msgHandlerReqRoomList,
-			netmsg.Message_REQ_ROOM_JOIN: s.msgHandlerReqRoomJoin,
+		Dispatcher: map[pb.Message_Type]handler.MsgFunc{
+			pb.Message_REQ_WAY: s.msgHandlerReqWay,
+			pb.Message_REQ_ROOM_LIST: s.msgHandlerReqRoomList,
+			pb.Message_REQ_ROOM_JOIN: s.msgHandlerReqRoomJoin,
 		}}
 	return s
 }
 
 func (session* Session) disconnect() {
+	if session.conn != nil {
+		_ = session.conn.Close()
+	}
 	session.manager.Remove(session)
 }
 
-func (session* Session) Send(msg netmsg.Message_Type, data proto.Message) {
+func (session* Session) Send(msg pb.Message_Type, data proto.Message) {
 	var marshal []byte
 
 	if data != nil {
 		convert, err := proto.Marshal(data)
 		marshal = convert
 		if err != nil {
-			log.Fatal("marsharing error")
+			log.Fatal("Marshal error")
 		}
 	}
 
 	var networkBuffer bytes.Buffer
 
-	binary.Write(&networkBuffer, binary.LittleEndian, int32(HeaderSize + int32(len(marshal))))
-	binary.Write(&networkBuffer, binary.LittleEndian, int32(msg))
+	_ = binary.Write(&networkBuffer, binary.LittleEndian, int32(HeaderSize+int32(len(marshal))))
+	_ = binary.Write(&networkBuffer, binary.LittleEndian, int32(msg))
 
 	if data != nil {
-		binary.Write(&networkBuffer, binary.LittleEndian, marshal)
+		_ = binary.Write(&networkBuffer, binary.LittleEndian, marshal)
 	}
 
 	session.conn.Write(networkBuffer.Bytes())
@@ -75,7 +79,7 @@ func (session* Session) Send(msg netmsg.Message_Type, data proto.Message) {
 func (session* Session) Serve() {
 	defer session.disconnect()
 
-	session.Send(netmsg.Message_WAY, nil)
+	session.Send(pb.Message_WAY, nil)
 
 	for {
 		n, err := session.conn.Read(session.recvBuff)
@@ -87,7 +91,14 @@ func (session* Session) Serve() {
 			log.Printf("fail to receive data; err : %v", err)
 			return
 		}
+
 		session.recvSize += int32(n)
+
+		if session.recvSize > conf.SessionBufferSize {
+			log.Printf("disconnect session. recv buffer overflow disconnect %v", session.conn.RemoteAddr())
+			session.disconnect()
+			return
+		}
 
 		log.Println("receive n = ", n)
 
@@ -107,7 +118,7 @@ func (session* Session) Serve() {
 				msg := byteToInt32(msgTemp)
 				msgBody := session.recvData[HeaderSize : size]
 
-				val, exists := session.msgHandler.Dispatcher[netmsg.Message_Type(msg)]
+				val, exists := session.msgHandler.Dispatcher[pb.Message_Type(msg)]
 
 				if !exists {
 					log.Println("message not exists")
@@ -123,7 +134,7 @@ func (session* Session) Serve() {
 }
 
 func (session* Session)msgHandlerTest(msgBody []byte) {
-	var msgProto netmsg.Person
+	var msgProto pb.Person
 
 	proto.Unmarshal(msgBody, &msgProto)
 
@@ -132,7 +143,7 @@ func (session* Session)msgHandlerTest(msgBody []byte) {
 
 func (session* Session)msgHandlerReqWay(msgBody []byte) {
 
-	var msgReqWay netmsg.ReqWay
+	var msgReqWay pb.ReqWay
 
 	proto.Unmarshal(msgBody, &msgReqWay)
 
@@ -140,19 +151,19 @@ func (session* Session)msgHandlerReqWay(msgBody []byte) {
 	session.Info.Name = msgReqWay.Name
 	session.Info.Email = msgReqWay.Email
 
-	msgAckWay := netmsg.AckWay{
+	msgAckWay := pb.AckWay{
 		Name : session.Info.Name,
 		Email : session.Info.Email,
 		Uuid : session.Info.uid.String(),
 	}
 
-	session.Send(netmsg.Message_ACK_WAY, &msgAckWay)
+	session.Send(pb.Message_ACK_WAY, &msgAckWay)
 }
 
 func (session* Session)msgHandlerReqRoomList(msgBody []byte) {
-	rooms := netmsg.AckRoomList{}
+	rooms := pb.AckRoomList{}
 	for _, r := range chat.RoomManagerInstance().List() {
-		msgRoomInfo := &netmsg.RoomInfo{
+		msgRoomInfo := &pb.RoomInfo{
 			RoomIdx:              r.Idx,
 			Title:                r.Title,
 			ParticipateCount:     r.ParticipateCount,
@@ -160,12 +171,11 @@ func (session* Session)msgHandlerReqRoomList(msgBody []byte) {
 		rooms.RoomList = append(rooms.RoomList, msgRoomInfo)
 	}
 
-	session.Send(netmsg.Message_ACK_ROOM_LIST, &rooms)
+	session.Send(pb.Message_ACK_ROOM_LIST, &rooms)
 }
 
 func (session* Session)msgHandlerReqRoomJoin(msgBody []byte) {
-	var msgReqRoomJoin netmsg.ReqRoomJoin
+	var msgReqRoomJoin pb.ReqRoomJoin
 
-	proto.Unmarshal(msgBody, &msgReqRoomJoin)
-
+	_ = proto.Unmarshal(msgBody, &msgReqRoomJoin)
 }

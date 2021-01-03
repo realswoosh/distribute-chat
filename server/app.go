@@ -1,14 +1,14 @@
 package main
 
 import (
-	"./cmd"
-	dmnet "./net"
+	"distribute-chat/server/cmd"
+	dmnet "distribute-chat/server/net"
 )
 
 func main() {
 	s := dmnet.NewServer()
 
-	s.Listen(":20055")
+	_ = s.Listen(":20055")
 	s.Start()
 
 	cmd.CommandHandler()

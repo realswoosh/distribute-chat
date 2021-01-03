@@ -2,9 +2,11 @@
 
 // [START declaration]
 syntax = "proto3";
+
 package netmsg;
 
 option csharp_namespace = "net.msg";
+option go_package = "netmsg/pb";
 
 message ReqWay {
     string name = 1;

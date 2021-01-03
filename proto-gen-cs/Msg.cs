@@ -27,18 +27,23 @@ namespace net.msg {
             "Cgltc2cucHJvdG8SBm5ldG1zZyKKAQoHTWVzc2FnZSJ/CgRUeXBlEggKBFRF",
             "U1QQABIHCgNXQVkQARILCgdSRVFfV0FZEAISCwoHQUNLX1dBWRADEhEKDVJF",
             "UV9ST09NX0xJU1QQBBIRCg1BQ0tfUk9PTV9MSVNUEAUSEQoNUkVRX1JPT01f",
-            "Sk9JThAGEhEKDUFDS19ST09NX0pPSU4QB0IKqgIHbmV0Lm1zZ2IGcHJvdG8z"));
+            "Sk9JThAGEhEKDUFDS19ST09NX0pPSU4QB0IVWgluZXRtc2cvcGKqAgduZXQu",
+            "bXNnYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::net.msg.Message), global::net.msg.Message.Parser, null, null, new[]{ typeof(global::net.msg.Message.Types.Type) }, null)
+          new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::net.msg.Message), global::net.msg.Message.Parser, null, null, new[]{ typeof(global::net.msg.Message.Types.Type) }, null, null)
           }));
     }
     #endregion
 
   }
   #region Messages
-  public sealed partial class Message : pb::IMessage<Message> {
+  public sealed partial class Message : pb::IMessage<Message>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
     private static readonly pb::MessageParser<Message> _parser = new pb::MessageParser<Message>(() => new Message());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -103,10 +108,23 @@ namespace net.msg {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -127,6 +145,9 @@ namespace net.msg {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -135,7 +156,22 @@ namespace net.msg {
             break;
         }
       }
+    #endif
     }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+        }
+      }
+    }
+    #endif
 
     #region Nested types
     /// <summary>Container for nested types declared in the Message message type.</summary>

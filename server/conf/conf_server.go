@@ -29,3 +29,5 @@ type Configuration struct {
 	HubInfos []HubInfo 		`json:"hubs"`
 	MsgQueue MessageQueue 	`json:"msg_queue"`
 }
+
+var SessionBufferSize int32 = 1024

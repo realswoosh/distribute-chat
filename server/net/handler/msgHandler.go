@@ -1,11 +1,11 @@
 package handler
 
 import (
-	"../../../proto-gen-go"
+	pb "distribute-chat/proto-gen-go/netmsg/pb"
 )
 
 type MsgFunc func(msgBody []byte)
 
 type MsgHandler struct {
-	Dispatcher map[netmsg.Message_Type]MsgFunc
+	Dispatcher map[pb.Message_Type]MsgFunc
 }

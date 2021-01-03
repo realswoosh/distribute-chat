@@ -1,10 +1,10 @@
 package main
 
 import (
-	"../proto-gen-go"
-	"./conf"
-	dmnet "./net"
 	"bytes"
+	netMsg "distribute-chat/proto-gen-go"
+	"distribute-chat/server/conf"
+	dmnet "distribute-chat/server/net"
 	"encoding/binary"
 	"encoding/json"
 	"fmt"
@@ -18,7 +18,7 @@ import (
 
 func TestProto1(t *testing.T) {
 
-	test := &netmsg.Person{
+	test := &netMsg.Person{
 		Name : "a",
 		Id : 10,
 		Email : "realdm99@google.com",
@@ -66,7 +66,7 @@ func TestProto1(t *testing.T) {
 
 	binary.Read(&tmpBuff, binary.LittleEndian, msgBody)
 
-	var readProto netmsg.Person
+	var readProto netMsg.Person
 	proto.Unmarshal(msgBody, &readProto)
 
 	log.Println("readMsg : ", msgRead)
@@ -103,13 +103,13 @@ func TestWriteByteBuffer(t *testing.T) {
 		log.Fatalf("failed to connect to server")
 	}
 
-	test := &netmsg.Person{
+	test := &netMsg.Person{
 		Name:  "a",
 		Id:    10,
 		Email: "realdm99@google.com",
 	}
 
-	msg := netmsg.Message_REQ_WAY
+	msg := netMsg.Message_REQ_WAY
 
 	var network bytes.Buffer
 
