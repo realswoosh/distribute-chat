@@ -2,7 +2,7 @@ package net
 
 import "reflect"
 
-func byteToInt32(data []byte) int32{
+func ByteToInt32(data []byte) int32 {
 	var n int32
 
 	n |= int32(data[0])
@@ -12,7 +12,6 @@ func byteToInt32(data []byte) int32{
 
 	return n
 }
-
 
 func HasElem(s interface{}, elem interface{}) bool {
 	arrV := reflect.ValueOf(s)

@@ -17,5 +17,7 @@ message Message {
         ACK_ROOM_LIST = 5;
         REQ_ROOM_JOIN = 6;
         ACK_ROOM_JOIN = 7;
+        PING = 8;
+        PONG = 9;
     }
 }

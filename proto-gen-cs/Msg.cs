@@ -24,11 +24,11 @@ namespace net.msg {
     static MsgReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cgltc2cucHJvdG8SBm5ldG1zZyKKAQoHTWVzc2FnZSJ/CgRUeXBlEggKBFRF",
-            "U1QQABIHCgNXQVkQARILCgdSRVFfV0FZEAISCwoHQUNLX1dBWRADEhEKDVJF",
-            "UV9ST09NX0xJU1QQBBIRCg1BQ0tfUk9PTV9MSVNUEAUSEQoNUkVRX1JPT01f",
-            "Sk9JThAGEhEKDUFDS19ST09NX0pPSU4QB0IVWgluZXRtc2cvcGKqAgduZXQu",
-            "bXNnYgZwcm90bzM="));
+            "Cgltc2cucHJvdG8SBm5ldG1zZyKfAQoHTWVzc2FnZSKTAQoEVHlwZRIICgRU",
+            "RVNUEAASBwoDV0FZEAESCwoHUkVRX1dBWRACEgsKB0FDS19XQVkQAxIRCg1S",
+            "RVFfUk9PTV9MSVNUEAQSEQoNQUNLX1JPT01fTElTVBAFEhEKDVJFUV9ST09N",
+            "X0pPSU4QBhIRCg1BQ0tfUk9PTV9KT0lOEAcSCAoEUElORxAIEggKBFBPTkcQ",
+            "CUIVWgluZXRtc2cvcGKqAgduZXQubXNnYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -47,19 +47,23 @@ namespace net.msg {
     private static readonly pb::MessageParser<Message> _parser = new pb::MessageParser<Message>(() => new Message());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<Message> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
       get { return global::net.msg.MsgReflection.Descriptor.MessageTypes[0]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     pbr::MessageDescriptor pb::IMessage.Descriptor {
       get { return Descriptor; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public Message() {
       OnConstruction();
     }
@@ -67,21 +71,25 @@ namespace net.msg {
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public Message(Message other) : this() {
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public Message Clone() {
       return new Message(this);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
       return Equals(other as Message);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool Equals(Message other) {
       if (ReferenceEquals(other, null)) {
         return false;
@@ -93,6 +101,7 @@ namespace net.msg {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
       if (_unknownFields != null) {
@@ -102,11 +111,13 @@ namespace net.msg {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override string ToString() {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public void WriteTo(pb::CodedOutputStream output) {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
@@ -119,6 +130,7 @@ namespace net.msg {
 
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -127,6 +139,7 @@ namespace net.msg {
     #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
       if (_unknownFields != null) {
@@ -136,6 +149,7 @@ namespace net.msg {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public void MergeFrom(Message other) {
       if (other == null) {
         return;
@@ -144,6 +158,7 @@ namespace net.msg {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public void MergeFrom(pb::CodedInputStream input) {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       input.ReadRawMessage(this);
@@ -161,6 +176,7 @@ namespace net.msg {
 
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
@@ -176,6 +192,7 @@ namespace net.msg {
     #region Nested types
     /// <summary>Container for nested types declared in the Message message type.</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static partial class Types {
       public enum Type {
         [pbr::OriginalName("TEST")] Test = 0,
@@ -186,6 +203,8 @@ namespace net.msg {
         [pbr::OriginalName("ACK_ROOM_LIST")] AckRoomList = 5,
         [pbr::OriginalName("REQ_ROOM_JOIN")] ReqRoomJoin = 6,
         [pbr::OriginalName("ACK_ROOM_JOIN")] AckRoomJoin = 7,
+        [pbr::OriginalName("PING")] Ping = 8,
+        [pbr::OriginalName("PONG")] Pong = 9,
       }
 
     }

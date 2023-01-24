@@ -48,4 +48,12 @@ message Person {
 message AddressBook {
   repeated Person people = 1;
 }
+
+message Ping {
+  string name = 1;
+}
+
+message Pong {
+  string name = 1;
+}
 // [END messages]

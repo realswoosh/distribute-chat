@@ -2,7 +2,7 @@ package main
 
 import (
 	"bytes"
-	netMsg "distribute-chat/proto-gen-go"
+	netMsg "distribute-chat/proto-gen-go/netmsg/pb"
 	"distribute-chat/server/conf"
 	dmnet "distribute-chat/server/net"
 	"encoding/binary"
@@ -19,9 +19,9 @@ import (
 func TestProto1(t *testing.T) {
 
 	test := &netMsg.Person{
-		Name : "a",
-		Id : 10,
-		Email : "realdm99@google.com",
+		Name:  "a",
+		Id:    10,
+		Email: "realdm99@google.com",
 	}
 
 	data, err := proto.Marshal(test)
@@ -35,7 +35,7 @@ func TestProto1(t *testing.T) {
 
 	var tmpBuff bytes.Buffer
 
-	binary.Write(&tmpBuff, binary.LittleEndian, 4 + int32(len(data)) + int32(len(msgText)))
+	binary.Write(&tmpBuff, binary.LittleEndian, 4+int32(len(data))+int32(len(msgText)))
 	binary.Write(&tmpBuff, binary.LittleEndian, []byte(msgText))
 	binary.Write(&tmpBuff, binary.LittleEndian, data)
 
@@ -62,7 +62,7 @@ func TestProto1(t *testing.T) {
 	log.Println("remain buff size : ", tmpBuff.Len())
 
 	msgRead = string(msgByte)
-	var msgBody = make([]byte, size - 8)
+	var msgBody = make([]byte, size-8)
 
 	binary.Read(&tmpBuff, binary.LittleEndian, msgBody)
 
@@ -70,7 +70,7 @@ func TestProto1(t *testing.T) {
 	proto.Unmarshal(msgBody, &readProto)
 
 	log.Println("readMsg : ", msgRead)
-	log.Println("proto : " , readProto)
+	log.Println("proto : ", readProto)
 
 	log.Println("remain buff size : ", tmpBuff.Len())
 
@@ -123,7 +123,7 @@ func TestWriteByteBuffer(t *testing.T) {
 			log.Fatal("marsharing error")
 		}
 
-		binary.Write(&network, binary.LittleEndian, 4 + 4 + int32(len(data)))
+		binary.Write(&network, binary.LittleEndian, 4+4+int32(len(data)))
 		binary.Write(&network, binary.LittleEndian, int32(msg))
 		binary.Write(&network, binary.LittleEndian, data)
 
@@ -145,11 +145,11 @@ func TestJsonConfig(t *testing.T) {
 	fmt.Println(string(bytes))
 
 	configurationSave := &conf.Configuration{
-		HubInfos: [] conf.HubInfo {
+		HubInfos: []conf.HubInfo{
 			{
-				Name: "hubName",
+				Name:    "hubName",
 				Address: "hubAddress",
-				Type: "hubType",
+				Type:    "hubType",
 			},
 		},
 		MsgQueue: conf.MessageQueue{

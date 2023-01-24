@@ -4,20 +4,26 @@ import "sync"
 
 type SessionManager struct {
 	sessions []*Session
-	mutex *sync.Mutex
+	mutex    *sync.Mutex
 }
 
-func CreateSessionManager() *SessionManager{
+func CreateSessionManager() *SessionManager {
 	return &SessionManager{
 		mutex: &sync.Mutex{},
 	}
 }
 
-func (manager* SessionManager) TotalSessionCount() int {
+func (manager *SessionManager) TotalSessionCount() int {
 	return len(manager.sessions) + 1
 }
 
-func (manager* SessionManager) Remove(session *Session) {
+func (manager *SessionManager) Append(session *Session) {
+	manager.mutex.Lock()
+	defer manager.mutex.Unlock()
+	manager.sessions = append(manager.sessions, session)
+}
+
+func (manager *SessionManager) Remove(session *Session) {
 	manager.mutex.Lock()
 	defer manager.mutex.Unlock()
 
@@ -26,6 +32,7 @@ func (manager* SessionManager) Remove(session *Session) {
 	for i, check := range manager.sessions {
 		if check == session {
 			manager.sessions = append(manager.sessions[:i], manager.sessions[i+1:]...)
+			break
 		}
 	}
 }
